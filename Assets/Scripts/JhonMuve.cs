@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // Importante para cambiar de escena
 using UnityEngine.UI; // Importante para trabajar con UI
 
 public class JhonMuve : MonoBehaviour
@@ -17,6 +18,9 @@ public class JhonMuve : MonoBehaviour
 
     // Referencia a los objetos de la barra de vida
     public Transform BarraDeVidaRelleno;
+
+    // Nombre de la escena a la que quieres cambiar
+    public string nextSceneName;
 
     // Start is called before the first frame update
     void Start()
@@ -52,12 +56,19 @@ public class JhonMuve : MonoBehaviour
         {
             Jump();
         }
-        
+
         // Disparar
         if (Input.GetKey(KeyCode.Space) && Time.time > LastShoot + 0.25f)
         {
             Shoot();
             LastShoot = Time.time;
+        }
+
+        // Verificar si la posición X supera el valor de 5
+        if (transform.position.x > 5.0f)
+        {
+            // Cambiar a la siguiente escena
+            SceneManager.LoadScene(nextSceneName);
         }
     }
 
@@ -71,17 +82,17 @@ public class JhonMuve : MonoBehaviour
         Rigidbody2D.AddForce(Vector2.up * JumpForce);
     }
 
-  private void Shoot()
-{
-    Vector3 direction;
-    if (transform.localScale.x == 1.0f) direction = Vector3.right;
-    else direction = Vector3.left;
+    private void Shoot()
+    {
+        Vector3 direction;
+        if (transform.localScale.x == 1.0f) direction = Vector3.right;
+        else direction = Vector3.left;
 
-    GameObject disparo = Instantiate(DisparoPrefab, transform.position + direction * 0.1f, Quaternion.identity);
-    Disparar disparoScript = disparo.GetComponent<Disparar>();
-    disparoScript.SetDirection(direction);
-    disparoScript.SetOwner(gameObject); // Asigna al jugador como propietario de la bala
-}
+        GameObject disparo = Instantiate(DisparoPrefab, transform.position + direction * 0.1f, Quaternion.identity);
+        Disparar disparoScript = disparo.GetComponent<Disparar>();
+        disparoScript.SetDirection(direction);
+        disparoScript.SetOwner(gameObject); // Asigna al jugador como propietario de la bala
+    }
 
     public void Hit()
     {
