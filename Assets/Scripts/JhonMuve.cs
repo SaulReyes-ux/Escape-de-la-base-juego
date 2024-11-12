@@ -33,44 +33,52 @@ public class JhonMuve : MonoBehaviour
     }
 
     // Update es llamado una vez por frame
-    void Update()
+  void Update()
+{
+    Horizontal = Input.GetAxisRaw("Horizontal");
+
+    //voltear, izquierda, derecha
+    if (Horizontal < 0.0f) transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+    else if (Horizontal > 0.0f) transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+    //correr
+    Animator.SetBool("running", Horizontal != 0.0f);
+
+    // Detectar Suelo
+    if (Physics2D.Raycast(transform.position, Vector3.down, 0.1f))
     {
-        Horizontal = Input.GetAxisRaw("Horizontal");
-
-        //voltear, izquierda, derecha
-        if (Horizontal < 0.0f) transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-        else if (Horizontal > 0.0f) transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-
-        //correr
-        Animator.SetBool("running", Horizontal != 0.0f);
-
-        // Detectar Suelo
-        if (Physics2D.Raycast(transform.position, Vector3.down, 0.1f))
-        {
-            Grounded = true;
-        }
-        else Grounded = false;
-
-        // Salto
-        if (Input.GetKeyDown(KeyCode.W) && Grounded)
-        {
-            Jump();
-        }
-
-        // Disparar
-        if (Input.GetKey(KeyCode.Space) && Time.time > LastShoot + 0.25f)
-        {
-            Shoot();
-            LastShoot = Time.time;
-        }
-
-        // Verificar si la posición X supera el valor de 5
-        if (transform.position.x > 5.0f)
-        {
-            // Cambiar a la siguiente escena
-            SceneManager.LoadScene(nextSceneName);
-        }
+        Grounded = true;
     }
+    else Grounded = false;
+
+    // Salto
+    if (Input.GetKeyDown(KeyCode.W) && Grounded)
+    {
+        Jump();
+    }
+
+    // Disparar
+    if (Input.GetKey(KeyCode.Space) && Time.time > LastShoot + 0.25f)
+    {
+        Shoot();
+        LastShoot = Time.time;
+    }
+
+    // Verificar si la posición X supera el valor de 5
+    if (transform.position.x > 5.0f)
+    {
+        // Cambiar a la siguiente escena
+        SceneManager.LoadScene(nextSceneName);
+    }
+
+    // Verificar si el personaje ha caído del mapa
+    if (transform.position.y < -6.0f) // Ajusta el valor según el diseño de tu mapa
+    {
+        // Reiniciar la escena si cae
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+}
+
 
     private void FixedUpdate()
     {
@@ -96,9 +104,13 @@ public class JhonMuve : MonoBehaviour
 
     public void Hit()
     {
-        Health = Health - 1;
+        Health -= 1;
         UpdateHealthBar(); // Actualizar la barra de vida cuando recibe daño
-        if (Health == 0) Destroy(gameObject);
+        if (Health <= 0) 
+        {
+            // Reiniciar la escena actual
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     private void UpdateHealthBar()
