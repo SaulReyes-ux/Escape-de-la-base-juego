@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class iniciar : MonoBehaviour
 {
     // Start is called before the first frame update
-    public string Nivel1;
+    public string intro;
 
     private void Start()
     {
-        // Obtén el componente Button y añade el evento al presionarlo
+        // Obtï¿½n el componente Button y aï¿½ade el evento al presionarlo
         Button button = GetComponent<Button>();
         if (button != null)
         {
@@ -22,6 +22,6 @@ public class iniciar : MonoBehaviour
     private void OnButtonClick()
     {
         // Carga la escena especificada cuando se toca la imagen
-        SceneManager.LoadScene(Nivel1);
+        SceneManager.LoadScene(intro);
     }
 }
