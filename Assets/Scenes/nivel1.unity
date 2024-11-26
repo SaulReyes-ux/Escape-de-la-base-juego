@@ -1533,7 +1533,7 @@ MonoBehaviour:
   Speed: 1
   DisparoPrefab: {fileID: 6583119300803424238, guid: b32adda9d166949449977137f8887a60, type: 3}
   BarraDeVidaRelleno: {fileID: 775015027}
-  nextSceneName: Nivel2
+  nextSceneName: niv1a2
 --- !u!95 &633754398
 Animator:
   serializedVersion: 5
