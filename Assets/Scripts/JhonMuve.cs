@@ -15,6 +15,15 @@ public class JhonMuve : MonoBehaviour
     public GameObject DisparoPrefab;
     private float LastShoot;
     private int Health = 5;
+    private int vidasTotales = 3; // Total de vidas
+
+    public GameObject pantallaGameOver;
+
+    // Nombre del menú principal
+    public string menuPrincipal;
+
+    // Nombre del menú principal
+    public string nivel1;
 
     // Referencia a los objetos de la barra de vida
     public Transform BarraDeVidaRelleno;
@@ -25,6 +34,20 @@ public class JhonMuve : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (pantallaGameOver != null)
+        {
+            pantallaGameOver.SetActive(false);
+        }
+
+        if (PlayerPrefs.HasKey("VidasRestantes"))
+        {
+            vidasTotales = PlayerPrefs.GetInt("VidasRestantes");
+        }
+        else
+        {
+            vidasTotales = 3; // Valor inicial si no existe en PlayerPrefs
+        }
+
         Rigidbody2D = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
 
@@ -71,13 +94,15 @@ public class JhonMuve : MonoBehaviour
         SceneManager.LoadScene(nextSceneName);
     }
 
-    // Verificar si el personaje ha caído del mapa
-    if (transform.position.y < -6.0f) // Ajusta el valor según el diseño de tu mapa
-    {
-        // Reiniciar la escena si cae
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // Verificar si el personaje ha caído del mapa
+        if (transform.position.y < -6.0f) // Ajusta el valor según el diseño de tu mapa
+        {
+            Health = 0; // La salud se reduce a 0
+            UpdateHealthBar();
+            PerderVida(); // Activa el sistema de pérdida de vida
+        }
+
     }
-}
 
 
     private void FixedUpdate()
@@ -105,13 +130,41 @@ public class JhonMuve : MonoBehaviour
     public void Hit()
     {
         Health -= 1;
-        UpdateHealthBar(); // Actualizar la barra de vida cuando recibe daño
-        if (Health <= 0) 
+        UpdateHealthBar();
+
+        if (Health <= 0) PerderVida();
+    }
+
+    private void PerderVida()
+    {
+        vidasTotales--;
+
+        // Guardar las vidas restantes en PlayerPrefs
+        PlayerPrefs.SetInt("VidasRestantes", vidasTotales);
+        PlayerPrefs.Save();
+
+        // Depuración: imprimir el número de vidas restantes
+        Debug.Log("Vidas restantes: " + vidasTotales);
+
+        if (vidasTotales <= 0)
         {
-            // Reiniciar la escena actual
+            // Mostrar pantalla de Game Over
+            if (pantallaGameOver != null)
+            {
+                pantallaGameOver.SetActive(true);
+                Time.timeScale = 0; // Pausa el juego
+            }
+        }
+        else
+        {
+            // Reinicia el nivel actual si aún quedan vidas
+            Health = 5; // Restablece la salud del jugador
+            UpdateHealthBar();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
+
+
 
     private void UpdateHealthBar()
     {
@@ -121,4 +174,36 @@ public class JhonMuve : MonoBehaviour
             BarraDeVidaRelleno.localScale = new Vector3((float)Health / 5, 1, 1);
         }
     }
+
+    public void GanarVida(int cantidad)
+    {
+        Health += cantidad; // Incrementa la vida
+        if (Health > 5) Health = 5; // Opcional: Limita la vida máxima
+        UpdateHealthBar(); // Actualiza la barra de vida
+    }
+
+    public int GetHealth()
+    {
+        return Health;
+    }
+
+    public void ReiniciarNivel()
+    {
+        // Reiniciar las vidas a 3 y guardar en PlayerPrefs
+        vidasTotales = 4;
+        PlayerPrefs.SetInt("VidasRestantes", vidasTotales);
+        PlayerPrefs.Save();
+
+        Time.timeScale = 1; // Reanuda el juego
+        SceneManager.LoadScene(nivel1); // Cambia a Nivel 1
+    }
+
+
+    public void IrAlMenuPrincipal()
+    {
+        Time.timeScale = 1; // Reanuda el juego
+        SceneManager.LoadScene(menuPrincipal);
+    }
+
+
 }
