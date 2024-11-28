@@ -1,27 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class iniciar : MonoBehaviour
+public class MainMenuController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public string intro;
-
-    private void Start()
+    // Método para cargar la escena de nivel1
+    public void IniciarJuego()
     {
-        // Obt�n el componente Button y a�ade el evento al presionarlo
-        Button button = GetComponent<Button>();
-        if (button != null)
-        {
-            button.onClick.AddListener(OnButtonClick);
-        }
+        SceneManager.LoadScene("intro"); // Asegúrate de que el nombre de la escena sea correcto
     }
 
-    private void OnButtonClick()
+    // Método para salir del juego
+    public void SalirJuego()
     {
-        // Carga la escena especificada cuando se toca la imagen
-        SceneManager.LoadScene(intro);
+        // Solo funciona en el build del juego
+        Application.Quit();
+
+        // Si estás en el editor de Unity, puedes usar esta línea para detener la ejecución:
+        // UnityEditor.EditorApplication.isPlaying = false;
     }
 }
