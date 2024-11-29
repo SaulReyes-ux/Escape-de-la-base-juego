@@ -53,15 +53,20 @@ public class Disparar : MonoBehaviour
 
         JhonMuve john = collision.GetComponent<JhonMuve>();
         gruntScript grunt = collision.GetComponent<gruntScript>();
+        jefeScript jefe = collision.GetComponent<jefeScript>();
 
-        if (john != null)
-        {
-            john.Hit();
-        }
-        if (grunt != null)
-        {
-            grunt.Hit();
-        }
+         if (john != null)
+    {
+        john.Hit();
+    }
+    if (grunt != null)
+    {
+        grunt.Hit();
+    }
+    if (jefe != null) // Asegurarte de que no sea null antes de llamar a Hit()
+    {
+        jefe.Hit();
+    }
 
         DistruirDisparo();
     }
