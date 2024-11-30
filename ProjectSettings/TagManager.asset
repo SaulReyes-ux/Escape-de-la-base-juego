@@ -13,14 +13,9 @@ TagManager:
   - suelo
   - Water
   - UI
-
-  - EnemyLayer
-  - PlayerLayer
-  - wallLayer
-  - Player
-  - Item
+  - Obstaculo
   - 
-
+  - 
   - 
   - 
   - 

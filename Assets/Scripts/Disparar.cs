@@ -6,6 +6,7 @@ public class Disparar : MonoBehaviour
 {
     public AudioClip Sound;
     public float Speed;
+    public int damage = 10; // Daño que inflige la bala
     private Rigidbody2D Rigidbody2D;
     private Vector3 Direction;
     private GameObject owner; // Propietario de la bala
@@ -45,28 +46,27 @@ public class Disparar : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ignorar colisión si el objeto colisionado es el propietario de la bala
         if (collision.gameObject == owner)
         {
-            return; // Salir sin hacer nada si colisiona con su propietario
+            return;
         }
 
         JhonMuve john = collision.GetComponent<JhonMuve>();
         gruntScript grunt = collision.GetComponent<gruntScript>();
         jefeScript jefe = collision.GetComponent<jefeScript>();
 
-         if (john != null)
-    {
-        john.Hit();
-    }
-    if (grunt != null)
-    {
-        grunt.Hit();
-    }
-    if (jefe != null) // Asegurarte de que no sea null antes de llamar a Hit()
-    {
-        jefe.Hit();
-    }
+        if (john != null)
+        {
+            john.Hit(); // No necesita parámetro si no lo requiere.
+        }
+        if (grunt != null)
+        {
+            grunt.Hit();
+        }
+        if (jefe != null)
+        {
+            jefe.Hit(); // Pasa el daño como parámetro al método Hit.
+        }
 
         DistruirDisparo();
     }

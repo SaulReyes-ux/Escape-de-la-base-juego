@@ -17,7 +17,7 @@ public class VideoSceneChanger : MonoBehaviour
             // Intenta encontrar automáticamente el componente VideoPlayer en el mismo objeto
             videoPlayer = GetComponent<VideoPlayer>();
         }
-        
+
         // Asegura que se asigne el evento solo si el VideoPlayer está configurado
         if (videoPlayer != null)
         {
@@ -30,10 +30,28 @@ public class VideoSceneChanger : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        // Detectar la tecla de espacio
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Cambiar de escena inmediatamente cuando se presiona la tecla espacio
+            ChangeScene();
+        }
+    }
+
     // Método que se llama cuando el video termina
     void OnVideoEnd(VideoPlayer vp)
+    {
+        // Cambia a la siguiente escena
+        ChangeScene();
+    }
+
+    // Método para cambiar la escena
+    void ChangeScene()
     {
         // Cambia a la siguiente escena
         SceneManager.LoadScene(nextSceneName);
     }
 }
+
