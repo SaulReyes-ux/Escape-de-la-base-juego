@@ -18,4 +18,29 @@ public class MainMenuController : MonoBehaviour
         // Si estás en el editor de Unity, puedes usar esta línea para detener la ejecución:
         // UnityEditor.EditorApplication.isPlaying = false;
     }
+
+    public void selecScene()
+    {
+        SceneManager.LoadScene("nivelesLista");
+    }
+
+    public void nivel1()
+    {
+        SceneManager.LoadScene("nivel1");
+    }
+
+    public void nivel2()
+    {
+        SceneManager.LoadScene("nivel2");
+    }
+
+    public void nivel3()
+    {
+        SceneManager.LoadScene("nivel3");
+    }
+
+    public void MenuPrincipal()
+    {
+        SceneManager.LoadScene("pantalladeinicio");
+    }
 }
