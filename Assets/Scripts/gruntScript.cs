@@ -9,7 +9,7 @@ public class gruntScript : MonoBehaviour
     private int Health = 1;
 
     private float LastShoot;
-    private bool isShooting = false; // Controla si ya está en proceso de disparo con delay
+    private bool isShooting = false; // Controla si ya estï¿½ en proceso de disparo con delay
 
     private void Update()
     {
@@ -21,20 +21,20 @@ public class gruntScript : MonoBehaviour
 
         float distance = Mathf.Abs(John.transform.position.x - transform.position.x);
 
-        // Si la distancia es menor a 1.0f y no está en proceso de disparar, inicia la corrutina
+        // Si la distancia es menor a 1.0f y no estï¿½ en proceso de disparar, inicia la corrutina
         if (distance < 1.0f && !isShooting)
         {
             StartCoroutine(ShootWithDelay(3.0f)); // Llama a la corrutina para disparar con delay entre disparos
         }
     }
 
-    // Corrutina que añade un delay entre cada disparo
+    // Corrutina que aï¿½ade un delay entre cada disparo
     private IEnumerator ShootWithDelay(float delay)
     {
-        isShooting = true; // Marca que está en proceso de disparo
+        isShooting = true; // Marca que estï¿½ en proceso de disparo
         Shoot(); // Dispara
         yield return new WaitForSeconds(delay); // Espera 3 segundos antes de permitir el siguiente disparo
-        isShooting = false; // Marca que ya terminó el proceso de disparo, permitiendo otro ciclo
+        isShooting = false; // Marca que ya terminï¿½ el proceso de disparo, permitiendo otro ciclo
     }
 
     private void Shoot()
@@ -47,9 +47,15 @@ public class gruntScript : MonoBehaviour
         disparo.GetComponent<Disparar>().SetDirection(direction);
     }
 
-    public void Hit()
+  public void Hit()
+{
+    Health = Health - 1;
+    if (Health == 0)
     {
-        Health = Health - 1;
-        if (Health == 0) Destroy(gameObject);
+        // AÃ±adir puntuaciÃ³n al destruir el enemigo
+        ScoreManager.Instance.AddScore(10); // AÃ±ade 10 puntos por enemigo
+        Destroy(gameObject);
     }
+}
+
 }
